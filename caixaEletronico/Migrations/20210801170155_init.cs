@@ -47,7 +47,7 @@ namespace caixaEletronico.Migrations
                     DataNascimento = table.Column<string>(type: "TEXT", nullable: true),
                     Idade = table.Column<int>(type: "INTEGER", nullable: false),
                     TipoContaID = table.Column<int>(type: "INTEGER", nullable: false),
-                    EnderecoId = table.Column<int>(type: "INTEGER", nullable: false)
+                    EnderecoId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,13 +57,7 @@ namespace caixaEletronico.Migrations
                         column: x => x.EnderecoId,
                         principalTable: "Enderecos",
                         principalColumn: "EnderecoId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Pessoas_TipoContas_TipoContaID",
-                        column: x => x.TipoContaID,
-                        principalTable: "TipoContas",
-                        principalColumn: "TipoContaId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -80,11 +74,6 @@ namespace caixaEletronico.Migrations
                 name: "IX_Pessoas_EnderecoId",
                 table: "Pessoas",
                 column: "EnderecoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Pessoas_TipoContaID",
-                table: "Pessoas",
-                column: "TipoContaID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -93,10 +82,10 @@ namespace caixaEletronico.Migrations
                 name: "Pessoas");
 
             migrationBuilder.DropTable(
-                name: "Enderecos");
+                name: "TipoContas");
 
             migrationBuilder.DropTable(
-                name: "TipoContas");
+                name: "Enderecos");
         }
     }
 }

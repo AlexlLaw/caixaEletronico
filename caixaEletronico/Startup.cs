@@ -30,6 +30,9 @@ namespace caixaEletronico
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "caixaEletronico", Version = "v1" });
             });
+
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<ITipoContaRepository, TipoContaRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,17 +42,21 @@ namespace caixaEletronico
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "caixaEletronico v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.RoutePrefix = string.Empty;
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "caixaEletronico v1");
+                });
+
+                app.UseRouting();
+
+                app.UseAuthorization();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
             }
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
         }
     }
 }
