@@ -33,6 +33,8 @@ namespace caixaEletronico
 
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<ITipoContaRepository, TipoContaRepository>();
+            services.AddScoped<IContaRepository, ContaRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

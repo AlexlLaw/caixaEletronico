@@ -8,5 +8,6 @@ namespace caixaEletronico.model
         public string Localidade { get; set; }
         public string Uf { get; set; }
         public string Complemento { get; set; }
+        public Pessoa Pessoa { get; set; }
     }
 }

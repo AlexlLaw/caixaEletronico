@@ -1,10 +1,14 @@
+using System.Linq;
 using System.Threading.Tasks;
+using caixaEletronico.model;
+using Microsoft.EntityFrameworkCore;
 
 namespace caixaEletronico.data
 {
     public class Repository : IRepository
     {
-         public DataContext _context { get; }
+        public DataContext _context { get; }
+        
         public Repository(DataContext context)
         {
             _context = context;

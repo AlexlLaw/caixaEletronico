@@ -11,69 +11,139 @@ namespace caixaEletronico.Controllers
     [ApiController]
     public class ContaController : Controller
     {
-       public IRepository _repo { get; }
-       public ITipoContaRepository _TipoContaRepository { get; }
+        public IRepository _repo { get; }
+        public ITipoContaRepository _TipoContaRepository { get; }
+        public IContaRepository _ContaRepository { get; }
 
-        public ContaController(IRepository repo, ITipoContaRepository tipoContaRepository )
+        public ContaController(IRepository repo, ITipoContaRepository tipoContaRepository, IContaRepository contaRepository )
         {
             _repo = repo;
             _TipoContaRepository = tipoContaRepository;
-        }
-    
-        [HttpGet]
-        public IActionResult get()
-        {
-            return Ok();
+            _ContaRepository = contaRepository;
+
         }
 
-         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet]
+        public async Task<IActionResult> get()
         {
-            return Ok();
+             try {
+                var result = await _ContaRepository.GetAll();
+
+                return Ok(result);
+            } catch {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
+            }
+        }
+
+        [HttpGet("cpf/{cpf}")]
+        public async Task<IActionResult> GetByCpf(string cpf)
+        {
+             try {
+                var result = await _ContaRepository.GetByCpf(cpf);
+
+                return Ok(result);
+            } catch {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
+            }
+        }
+
+        [HttpGet("{conta}")]
+        public async Task<IActionResult> GetByConta(string conta)
+        {
+             try {
+                var result = await _ContaRepository.GetByConta(conta);
+
+                return Ok(result);
+            } catch {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
+            }
+        }
+
+          [HttpGet("bla/{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+             try {
+                var result = await _ContaRepository.GetById(id);
+
+                return Ok(result);
+            } catch {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(Pessoa model)
         {
-            try {
+            try
+            {
 
                 var hasTipoConta = _TipoContaRepository.GetTipoContaById(model.TipoContaID);
-                
+
                 if (hasTipoConta.Result == null) {
-                     return Ok("Nosso caixa não faz operação com esse tipo de conta");
+                    return Ok("Nosso caixa não faz operação com esse tipo de conta");
                 }
-                
+
+                Random rand = new Random();
+                int numero = rand.Next(1000, 9999);
+
+                var numeroConta = numero + "-" + model.TipoContaID;
+                model.Conta.NumeroDaConta = numeroConta;
+
                 _repo.Add(model);
 
                 if (await _repo.SaveChangesAsync()) {
-                  Random rand = new Random();
-                  int numero = rand.Next(1000, 9999);     
-
-                  return Ok("Conta criada com sucesso, o numero da sua nova conta é :  " + numero  + "-" + model.TipoContaID);
+                    return Ok("Conta criada com sucesso, o numero da sua nova conta é :  " + numeroConta);
                 }
-                
-            } catch {
+
+            }
+            catch
+            {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
             }
-            
+
             return BadRequest();
         }
 
-        private Random Random()
-        {
-            throw new NotImplementedException();
-        }
-
         [HttpPut]
-        public IActionResult Put()
+        public async Task<IActionResult> Put(Pessoa model)
         {
-            return Ok();
+            try
+            {
+
+                _repo.Update(model);
+
+                if (await _repo.SaveChangesAsync()) {
+                    return Ok("Alteração realizada com sucesso");
+                }
+
+            }
+            catch
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
+            }
+
+            return BadRequest();
         }
 
-         [HttpDelete("{id}")]
-        public IActionResult Delete()
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            try {
+               var conta = await _ContaRepository.GetById(id);
+
+                if (conta == null) {
+                return NotFound();
+                }
+
+                _repo.Delete(conta);
+
+                if (await _repo.SaveChangesAsync()) {
+                    return Ok("Exclusão realizada com sucesso");
+                }
+            } catch {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
+            }
+             return BadRequest();
         }
     }
 }
