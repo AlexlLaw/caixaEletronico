@@ -1,5 +1,7 @@
 
 using caixaEletronico.data;
+using caixaEletronico.Extensions;
+using caixaEletronico.services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,10 +33,9 @@ namespace caixaEletronico
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "caixaEletronico", Version = "v1" });
             });
 
-            services.AddScoped<IRepository, Repository>();
-            services.AddScoped<ITipoContaRepository, TipoContaRepository>();
-            services.AddScoped<IContaRepository, ContaRepository>();
-            
+            services
+                    .AddRepositorys()
+                    .AddServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,6 +8,6 @@ namespace caixaEletronico.data
          Task<Pessoa[]> GetAll();
          Task<Pessoa> GetByConta(string conta);
          Task<Pessoa> GetByCpf(string cpf);
-          Task<Pessoa> GetById(int id);
+         Task<Pessoa> GetById(int id);
     }
 }
