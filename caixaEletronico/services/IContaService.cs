@@ -11,8 +11,8 @@ namespace caixaEletronico.services
         Task<Pessoa> GetById(int id);
         Task<TipoConta> GetTipoContaById(int id);
         Task<bool> SaveChangesAsync();
-        string AdicionarConta(Pessoa model);
+        void AdicionarConta(Pessoa model);
         void UpdateConta(Pessoa model);
-        string DeleteConta(int id);
+        void DeleteConta(Pessoa model);
     }
 }

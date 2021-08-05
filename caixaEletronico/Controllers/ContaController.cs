@@ -18,7 +18,6 @@ namespace caixaEletronico.Controllers
         public ContaController(IContaService contaService)
         {
             _ContaService = contaService;
-
         }
 
         [HttpGet]
@@ -70,18 +69,27 @@ namespace caixaEletronico.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(Pessoa model)
+        public async Task<IActionResult> Post(Pessoa model)
         {
             try
             {
-                var result = _ContaService.AdicionarConta(model);
+                var hasTipoConta = _ContaService.GetTipoContaById(model.TipoContaID);
 
-                return Ok(result);
+                if (hasTipoConta.Result == null) {
+                    return Ok("Nosso caixa não faz operação com esse tipo de conta");
+                }
+
+                  _ContaService.AdicionarConta(model);
+
+                if (await _ContaService.SaveChangesAsync()) {
+                    return Created($"/api/conta/{model.PessoaId}", "Conta aberta com sucesso, Numero da sua conta é: " +  model.Conta.NumeroDaConta);
+                }
             }
             catch
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
             }
+            return BadRequest();
         }
 
         [HttpPut]
@@ -89,6 +97,12 @@ namespace caixaEletronico.Controllers
         {
             try
             {
+                var pessoa = await _ContaService.GetById(model.PessoaId);
+
+                if (pessoa == null) {
+                    return NotFound("Usuario não encontrado!");
+                }
+
                 _ContaService.UpdateConta(model);
 
                 if (await _ContaService.SaveChangesAsync()) {
@@ -104,11 +118,20 @@ namespace caixaEletronico.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _ContaService.DeleteConta(id);
+                var pessoa = await _ContaService.GetById(id);
+
+                if (pessoa == null) {
+                    return Ok("Este usuario não encontrado");
+                }
+                _ContaService.DeleteConta(pessoa);
+
+                if (await _ContaService.SaveChangesAsync()) {
+                    return Ok("Exlusão realizada com sucesso");
+                }
             }
             catch {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");

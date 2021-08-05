@@ -19,10 +19,9 @@ namespace caixaEletronico.services
             _ContaRepository = contaRepository;
         }
 
-        public Task<Pessoa[]> GetAll()
+        public async Task<Pessoa[]> GetAll()
         {
-           var result =  _ContaRepository.GetAll();
-            return result;
+            return await  _ContaRepository.GetAll();
         }
 
         public Task<Pessoa> GetByCpf(string cpf)
@@ -49,14 +48,8 @@ namespace caixaEletronico.services
             return _repo.SaveChangesAsync();
         }
 
-        public string AdicionarConta(Pessoa model)
+        public void AdicionarConta(Pessoa model)
         {
-            var hasTipoConta = this.GetTipoContaById(model.TipoContaID);
-
-            if (hasTipoConta.Result == null) {
-                return "Nosso caixa não faz operação com esse tipo de conta";
-            }
-
             Random rand = new Random();
             int numero = rand.Next(1000, 9999);
 
@@ -64,8 +57,6 @@ namespace caixaEletronico.services
             model.Conta.NumeroDaConta = numeroConta;
 
             _repo.Add(model);
-            this.SaveChangesAsync();
-            return "Conta criada com sucesso, o numero da sua nova conta é :  " + numeroConta;
         }
 
         public void UpdateConta(Pessoa model)
@@ -73,19 +64,9 @@ namespace caixaEletronico.services
             _repo.Update(model);
         }
 
-        public string DeleteConta(int id) 
+        public void DeleteConta(Pessoa model) 
         {
-            var conta = this.GetById(id);
-
-            if (conta == null) {
-                return "Conta não encontrada";
-            }
-
-            _repo.Delete(conta);
-
-            this.SaveChangesAsync();
-
-            return "Exclusão realizada com sucesso";
+            _repo.Delete(model);
         }
     }
 }
