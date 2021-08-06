@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace caixaEletronico.model
 {
     public class Conta
@@ -7,5 +9,6 @@ namespace caixaEletronico.model
         public decimal Saldo { get; set; }
         public bool isAtivo { get; set;}
         public Pessoa Pessoa { get; set; }
+        public  List<Transferecia> Transferencias { get; set; }
     }
 }

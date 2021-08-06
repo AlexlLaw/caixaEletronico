@@ -1,6 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using caixaEletronico.data;
 using caixaEletronico.model;
 using caixaEletronico.services;
 using Microsoft.AspNetCore.Http;

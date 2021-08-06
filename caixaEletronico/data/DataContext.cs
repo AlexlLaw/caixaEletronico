@@ -12,6 +12,7 @@ namespace caixaEletronico.data
         public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<TipoConta> TipoContas { get; set; }
         public DbSet<Conta> Contas { get; set; }
+        public DbSet<Transferecia> transferecias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
