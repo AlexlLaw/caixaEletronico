@@ -49,7 +49,7 @@ namespace caixaEletronico.Controllers
                     );
                 }
             }
-            return Accepted();
+            return Ok("transferecia concluida com sucesso");
         }
     }
 }

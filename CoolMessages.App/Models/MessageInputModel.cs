@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 
-namespace caixaEletronico.DTO
+namespace CoolMessages.App.Models
 {
-    public class TransacoesDTO
+    public class MessageInputModel
     {
+       
         public int ContaDebitadoId { get; set; }
         public string DataDeTransferencia { get; set; }
         public string descricao { get; set; }

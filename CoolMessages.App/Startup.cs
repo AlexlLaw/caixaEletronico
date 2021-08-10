@@ -1,6 +1,6 @@
-
-using caixaEletronico.data;
-using caixaEletronico.Extensions;
+using CoolMessages.App.Consumers;
+using CoolMessages.App.Options;
+using CoolMessages.App.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using CoolMessages.App.Data;
+using CoolMessages.App.Extensions;
 
-namespace caixaEletronico
+
+namespace CoolMessages.App
 {
     public class Startup
     {
@@ -23,23 +26,30 @@ namespace caixaEletronico
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<RabbitMqConfiguration>(Configuration.GetSection("RabbitMqConfig"));
+
             services.AddDbContext<DataContext>(
                 options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
             );
+
+             services
+                    .AddRepositorys()
+                    .AddServices();
+            //  services.AddScoped<IRepository, Repository>();
+            // services.AddScoped<ITipoContaRepository, TipoContaRepository>();
+            // services.AddScoped<IContaRepository, ContaRepository>();
+
+            //   services.AddScoped<IConsumerService, ConsumerService>();
+            //  services.AddScoped<INotificationService, NotificationService>();
+
+
+              services.AddHostedService<ProcessMessageConsumer>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "caixaEletronico", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CoolMessages.App", Version = "v1" });
             });
-
-            services
-                    .AddRepositorys()
-                    .AddServices();
-                    
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,21 +59,19 @@ namespace caixaEletronico
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.RoutePrefix = string.Empty;
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "caixaEletronico v1");
-                });
-
-                app.UseRouting();
-
-                app.UseAuthorization();
-
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CoolMessages.App v1"));
             }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
