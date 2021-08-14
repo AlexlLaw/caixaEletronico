@@ -15,8 +15,6 @@ namespace CoolMessages.App.Services
             return _repo.SaveChangesAsync();
         }
 
-        public 
-
         public ConsumerService(IRepository repo, ITipoContaRepository tipoContaRepository, IContaRepository contaRepository)
         {
             _repo = repo;

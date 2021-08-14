@@ -133,7 +133,7 @@ namespace caixaEletronico.Migrations
                     b.Property<int>("ContaCreditadoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ContaId")
+                    b.Property<int>("ContaId")
                         .HasColumnType("int");
 
                     b.Property<string>("DataDeTransferencia")
@@ -176,11 +176,11 @@ namespace caixaEletronico.Migrations
 
             modelBuilder.Entity("caixaEletronico.model.Transferecia", b =>
                 {
-                    b.HasOne("caixaEletronico.model.Conta", "Conta")
+                    b.HasOne("caixaEletronico.model.Conta", null)
                         .WithMany("Transferencias")
-                        .HasForeignKey("ContaId");
-
-                    b.Navigation("Conta");
+                        .HasForeignKey("ContaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("caixaEletronico.model.Conta", b =>

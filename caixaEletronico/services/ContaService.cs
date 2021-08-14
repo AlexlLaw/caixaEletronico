@@ -73,5 +73,18 @@ namespace caixaEletronico.services
         {
             return _ContaRepository.GetContaById(id);
         }
+
+        public bool VerifySaldo(string NumeroDaConta,  decimal valorDaTransferencia)
+        {
+          var result = _ContaRepository.GetByConta(NumeroDaConta);
+
+         var saldoAtual = result.Result.Conta.Saldo;
+
+         if (saldoAtual <= 0 || saldoAtual < valorDaTransferencia) {
+             return true;
+         }
+
+         return false;
+        }
     }
 }

@@ -30,10 +30,15 @@ namespace caixaEletronico.Controllers
         {
              var hasContaDebitado = await _ContaService.GetByConta(model.NumeroDaConta);
              var hasContaCreditado = await _ContaService.GetByConta(model.NumeroDaContaCreditado);
-                    
-            if (hasContaDebitado == null || hasContaCreditado == null) { 
+             var hasSaldo = _ContaService.VerifySaldo(model.NumeroDaConta, model.Valor);
+
+              if (hasContaDebitado == null || hasContaCreditado == null) { 
                 return Ok("Essa conta não existe");
-            }
+              }
+
+             if (hasSaldo) {
+                 return Ok("Seu Saldo insulficiente");
+             }
             
             using (var connection = _factory.CreateConnection())
             {
@@ -47,8 +52,6 @@ namespace caixaEletronico.Controllers
                         autoDelete: false,
                         arguments: null
                     );
-
-                   
 
                     //Formatar os dados para enviar para a fila
                     var stringTransactions = JsonSerializer.Serialize(model);

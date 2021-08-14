@@ -86,7 +86,7 @@ namespace caixaEletronico.Migrations
                 {
                     TransfereciaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ContaId = table.Column<int>(type: "int", nullable: true),
+                    ContaId = table.Column<int>(type: "int", nullable: false),
                     DataDeTransferencia = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -100,7 +100,7 @@ namespace caixaEletronico.Migrations
                         column: x => x.ContaId,
                         principalTable: "Contas",
                         principalColumn: "ContaId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(

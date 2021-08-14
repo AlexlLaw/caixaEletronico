@@ -15,5 +15,6 @@ namespace caixaEletronico.services
         void UpdateConta(Pessoa model);
         void DeleteConta(Pessoa model);
         Task<Conta> GetContaById(int id);
+        bool VerifySaldo(string NumeroDaConta, decimal valorDaTransferencia);
     }
 }
