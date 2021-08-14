@@ -10,5 +10,6 @@ namespace caixaEletronico.DTO
         public string descricao { get; set; }
         public decimal Valor { get; set; }
         public int ContaCreditadoId { get; set; }
+        public string NumeroDaContaCreditado { get; set; }
     }
 }

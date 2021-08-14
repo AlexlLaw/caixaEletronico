@@ -4,6 +4,7 @@ using caixaEletronico.DTO;
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
 using caixaEletronico.services;
+using System.Threading.Tasks;
 
 namespace caixaEletronico.Controllers
 {
@@ -11,7 +12,6 @@ namespace caixaEletronico.Controllers
     [ApiController]
     public class TransferenciaController : ControllerBase
     {
-
         public IContaService _ContaService { get; }
         private const string QUEUE_NAME = "transferencias"; 
         private readonly ConnectionFactory _factory;
@@ -26,12 +26,13 @@ namespace caixaEletronico.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendMessage([FromBody] TransacoesDTO model)
+        public async Task<IActionResult> SendMessage([FromBody] TransacoesDTO model)
         {
-             var hasConta = _ContaService.GetByConta(model.NumeroDaConta);
+             var hasContaDebitado = await _ContaService.GetByConta(model.NumeroDaConta);
+             var hasContaCreditado = await _ContaService.GetByConta(model.NumeroDaContaCreditado);
                     
-            if (hasConta == null) { 
-                return BadRequest("Essa conta não existe");
+            if (hasContaDebitado == null || hasContaCreditado == null) { 
+                return Ok("Essa conta não existe");
             }
             
             using (var connection = _factory.CreateConnection())
