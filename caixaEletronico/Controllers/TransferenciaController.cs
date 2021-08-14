@@ -3,6 +3,7 @@ using System.Text.Json;
 using caixaEletronico.DTO;
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
+using caixaEletronico.services;
 
 namespace caixaEletronico.Controllers
 {
@@ -10,11 +11,14 @@ namespace caixaEletronico.Controllers
     [ApiController]
     public class TransferenciaController : ControllerBase
     {
+
+        public IContaService _ContaService { get; }
         private const string QUEUE_NAME = "transferencias"; 
         private readonly ConnectionFactory _factory;
 
-        public TransferenciaController()
+        public TransferenciaController(IContaService contaService)
         {
+            _ContaService = contaService;
             _factory = new ConnectionFactory 
             {
                 HostName = "localhost"
@@ -24,6 +28,12 @@ namespace caixaEletronico.Controllers
         [HttpPost]
         public IActionResult SendMessage([FromBody] TransacoesDTO model)
         {
+             var hasConta = _ContaService.GetByConta(model.NumeroDaConta);
+                    
+            if (hasConta == null) { 
+                return BadRequest("Essa conta não existe");
+            }
+            
             using (var connection = _factory.CreateConnection())
             {
                 using (var channel = connection.CreateModel())
@@ -36,6 +46,8 @@ namespace caixaEletronico.Controllers
                         autoDelete: false,
                         arguments: null
                     );
+
+                   
 
                     //Formatar os dados para enviar para a fila
                     var stringTransactions = JsonSerializer.Serialize(model);

@@ -10,7 +10,6 @@ namespace caixaEletronico.Controllers
     [ApiController]
     public class ContaController : Controller
     {
-
         public IContaService _ContaService { get; }
         
         public ContaController(IContaService contaService)
@@ -54,7 +53,7 @@ namespace caixaEletronico.Controllers
             }
         }
 
-          [HttpGet("bla/{id}")]
+        [HttpGet("id/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
              try {

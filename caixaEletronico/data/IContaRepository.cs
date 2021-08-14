@@ -9,5 +9,6 @@ namespace caixaEletronico.data
          Task<Pessoa> GetByConta(string conta);
          Task<Pessoa> GetByCpf(string cpf);
          Task<Pessoa> GetById(int id);
+         Task<Conta> GetContaById(int id);
     }
 }

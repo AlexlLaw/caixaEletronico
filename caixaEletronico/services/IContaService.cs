@@ -14,5 +14,6 @@ namespace caixaEletronico.services
         void AdicionarConta(Pessoa model);
         void UpdateConta(Pessoa model);
         void DeleteConta(Pessoa model);
+        Task<Conta> GetContaById(int id);
     }
 }

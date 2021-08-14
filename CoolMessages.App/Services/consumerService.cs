@@ -10,6 +10,13 @@ namespace CoolMessages.App.Services
         public ITipoContaRepository _TipoContaRepository { get; }
         public IContaRepository _ContaRepository { get; }
 
+        public Task<bool> SaveChangesAsync()
+        {
+            return _repo.SaveChangesAsync();
+        }
+
+        public 
+
         public ConsumerService(IRepository repo, ITipoContaRepository tipoContaRepository, IContaRepository contaRepository)
         {
             _repo = repo;
@@ -19,12 +26,12 @@ namespace CoolMessages.App.Services
 
         public Transferecia MontarTransferencia(MessageInputModel model)
         {
-          var contaDebitante = _ContaRepository.GetContaById(model.ContaDebitadoId);
           var transferecia = new Transferecia();
 
-          transferecia.ContaCreditadoId = model.ContaCreditadoId;
+          transferecia.ContaId = model.ContaDebitadoId;
           transferecia.DataDeTransferencia = model.DataDeTransferencia;
           transferecia.Valor = model.Valor;
+          transferecia.descricao = model.descricao;
           transferecia.ContaCreditadoId = model.ContaCreditadoId;
 
           return transferecia;
@@ -33,8 +40,11 @@ namespace CoolMessages.App.Services
         public void addTransferencia(MessageInputModel model)
         {
           var dadosTransferencia = this.MontarTransferencia(model);
-
-          _repo.Add(dadosTransferencia);
+            
+           _repo.Add(dadosTransferencia);
         }
     }
 }
+
+
+

@@ -21,6 +21,7 @@ namespace caixaEletronico.data
                     .AsNoTracking()
                     .Include(p => p.Endereco)
                     .Include(p => p.Conta)
+                    .Include(p => p.Conta.Transferencias)
                     .OrderBy(p => p.PessoaId);
 
             return await query.ToArrayAsync();
@@ -60,6 +61,16 @@ namespace caixaEletronico.data
                     .Include(p => p.Endereco)
                     .Include(p => p.Conta)
                     .Where(p => p.PessoaId == id);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Conta> GetContaById(int id)
+        {
+             IQueryable<Conta> query = _context.Contas;
+             query = query   
+                    .AsNoTracking()
+                    .Where(c => c.ContaId == id);
 
             return await query.FirstOrDefaultAsync();
         }

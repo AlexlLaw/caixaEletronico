@@ -50,10 +50,8 @@ namespace CoolMessages.App.Consumers
                 var contentArray = eventArgs.Body.ToArray();
                 var contentString = Encoding.UTF8.GetString(contentArray);
                 var message = JsonConvert.DeserializeObject<MessageInputModel>(contentString);
+                
                 this.Post(message);
-
-               
-
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             };
 
@@ -72,13 +70,21 @@ namespace CoolMessages.App.Consumers
             }
         }
 
-        public void Post(MessageInputModel message)
+        public async void Post(MessageInputModel message)
         {
              using (var scope = _serviceProvider.CreateScope())
              {
                  var consumerService = scope.ServiceProvider.GetRequiredService<IConsumerService>();
                  consumerService.addTransferencia(message);
+
+                 if (await consumerService.SaveChangesAsync()) {
+                      Console.WriteLine("transferencia completa");
+                      return;
+                 }
+
+                 Console.WriteLine("Ocorreu um erro na transação");
              }
         }
     }
 }
+ 

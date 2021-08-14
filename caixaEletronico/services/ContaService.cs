@@ -68,5 +68,10 @@ namespace caixaEletronico.services
         {
             _repo.Delete(model);
         }
+
+        public Task<Conta> GetContaById(int id)
+        {
+            return _ContaRepository.GetContaById(id);
+        }
     }
 }

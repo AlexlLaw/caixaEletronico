@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CoolMessages.App.Migrations
+namespace caixaEletronico.Migrations
 {
     public partial class init : Migration
     {
@@ -10,15 +10,15 @@ namespace CoolMessages.App.Migrations
                 name: "Pessoas",
                 columns: table => new
                 {
-                    PessoaId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Nome = table.Column<string>(type: "TEXT", nullable: true),
-                    Cpf = table.Column<string>(type: "TEXT", nullable: true),
-                    DataNascimento = table.Column<string>(type: "TEXT", nullable: true),
-                    Idade = table.Column<int>(type: "INTEGER", nullable: false),
-                    TipoContaID = table.Column<int>(type: "INTEGER", nullable: false),
-                    EnderecoId = table.Column<int>(type: "INTEGER", nullable: true),
-                    ContaId = table.Column<int>(type: "INTEGER", nullable: true)
+                    PessoaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cpf = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DataNascimento = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Idade = table.Column<int>(type: "int", nullable: false),
+                    TipoContaID = table.Column<int>(type: "int", nullable: false),
+                    EnderecoId = table.Column<int>(type: "int", nullable: true),
+                    ContaId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,9 +29,9 @@ namespace CoolMessages.App.Migrations
                 name: "TipoContas",
                 columns: table => new
                 {
-                    TipoContaId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Tipo = table.Column<string>(type: "TEXT", nullable: true)
+                    TipoContaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,10 +42,10 @@ namespace CoolMessages.App.Migrations
                 name: "Contas",
                 columns: table => new
                 {
-                    ContaId = table.Column<int>(type: "INTEGER", nullable: false),
-                    NumeroDaConta = table.Column<string>(type: "TEXT", nullable: true),
-                    Saldo = table.Column<decimal>(type: "TEXT", nullable: false),
-                    isAtivo = table.Column<bool>(type: "INTEGER", nullable: false)
+                    ContaId = table.Column<int>(type: "int", nullable: false),
+                    NumeroDaConta = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Saldo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    isAtivo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,12 +62,12 @@ namespace CoolMessages.App.Migrations
                 name: "Enderecos",
                 columns: table => new
                 {
-                    EnderecoId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Cep = table.Column<string>(type: "TEXT", nullable: true),
-                    Logradouro = table.Column<string>(type: "TEXT", nullable: true),
-                    Localidade = table.Column<string>(type: "TEXT", nullable: true),
-                    Uf = table.Column<string>(type: "TEXT", nullable: true),
-                    Complemento = table.Column<string>(type: "TEXT", nullable: true)
+                    EnderecoId = table.Column<int>(type: "int", nullable: false),
+                    Cep = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Logradouro = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Localidade = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Uf = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Complemento = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -84,13 +84,13 @@ namespace CoolMessages.App.Migrations
                 name: "transferecias",
                 columns: table => new
                 {
-                    TransfereciaId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ContaId = table.Column<int>(type: "INTEGER", nullable: true),
-                    DataDeTransferencia = table.Column<string>(type: "TEXT", nullable: true),
-                    descricao = table.Column<string>(type: "TEXT", nullable: true),
-                    Valor = table.Column<decimal>(type: "TEXT", nullable: false),
-                    ContaCreditadoId = table.Column<int>(type: "INTEGER", nullable: false)
+                    TransfereciaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ContaId = table.Column<int>(type: "int", nullable: true),
+                    DataDeTransferencia = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ContaCreditadoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -102,6 +102,16 @@ namespace CoolMessages.App.Migrations
                         principalColumn: "ContaId",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "TipoContas",
+                columns: new[] { "TipoContaId", "Tipo" },
+                values: new object[] { 1, "Conta Corrente" });
+
+            migrationBuilder.InsertData(
+                table: "TipoContas",
+                columns: new[] { "TipoContaId", "Tipo" },
+                values: new object[] { 2, "Poupança" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_transferecias_ContaId",

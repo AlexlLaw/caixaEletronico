@@ -28,9 +28,7 @@ namespace CoolMessages.App
         {
             services.Configure<RabbitMqConfiguration>(Configuration.GetSection("RabbitMqConfig"));
 
-            services.AddDbContext<DataContext>(
-                options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
-            );
+             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
 
              services
                     .AddRepositorys()

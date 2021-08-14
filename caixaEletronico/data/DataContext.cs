@@ -34,7 +34,7 @@ namespace caixaEletronico.data
                 .HasOne(a => a.Endereco)
                 .WithOne(b => b.Pessoa)
                 .HasForeignKey<Endereco>(b => b.EnderecoId);
-
+                
             builder.Entity<Pessoa>()
               .HasOne(a => a.Conta)
               .WithOne(b => b.Pessoa)
