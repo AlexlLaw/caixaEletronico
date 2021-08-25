@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "TDuppuuCL0mEP2dIpp9mS1Ulz50gabYNT3RCAGboLuz1txWVmZ763JqesbLqDcDEakG5H16vR6fqXB0SMS64Dw==",
+  "dgSpecHash": "QMyk8RWL3AdI4lD63VEGImKgb1q7MG4+C9xLBeBuO3H1X/TkVY/ItX/AiZcbO4s5suYF2nkcylSRjhozAmpLDg==",
   "success": true,
   "projectFilePath": "C:\\Users\\junio\\Music\\c#\\caixaEletronico\\caixaEletronico\\caixaEletronico.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\junio\\.nuget\\packages\\fluentvalidation\\10.3.1\\fluentvalidation.10.3.1.nupkg.sha512",
+    "C:\\Users\\junio\\.nuget\\packages\\fluentvalidation.aspnetcore\\10.3.1\\fluentvalidation.aspnetcore.10.3.1.nupkg.sha512",
+    "C:\\Users\\junio\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\10.3.1\\fluentvalidation.dependencyinjectionextensions.10.3.1.nupkg.sha512",
     "C:\\Users\\junio\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\junio\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.0\\microsoft.aspnetcore.jsonpatch.5.0.0.nupkg.sha512",
     "C:\\Users\\junio\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.0\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.0.nupkg.sha512",

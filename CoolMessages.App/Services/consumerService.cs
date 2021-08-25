@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using CoolMessages.App.Data;
 using CoolMessages.App.Models;
+using System;
 
 namespace CoolMessages.App.Services
 {
@@ -34,12 +35,21 @@ namespace CoolMessages.App.Services
 
           return transferecia;
         }
+        public async Task<Conta> GetContaById(int id)
+        {
+            return await _ContaRepository.GetContaById(id);
+        }
 
+        public Task<Pessoa> GetByCpf(string cpf)
+        {
+            return _ContaRepository.GetByCpf(cpf);
+        }
+        
         public void addTransferencia(MessageInputModel model)
         {
-          var dadosTransferencia = this.MontarTransferencia(model);
-            
-           _repo.Add(dadosTransferencia);
+            var dadosTransferencia = this.MontarTransferencia(model);
+           
+            _repo.Add(dadosTransferencia);
         }
     }
 }

@@ -55,7 +55,7 @@ namespace  CoolMessages.App.Data
         {
              IQueryable<Pessoa> query = _context.Pessoas;
 
-            query = query   
+            query = query
                     .AsNoTracking()
                     .Include(p => p.Endereco)
                     .Include(p => p.Conta)

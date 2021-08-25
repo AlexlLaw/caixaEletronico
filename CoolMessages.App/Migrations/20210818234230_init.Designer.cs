@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoolMessages.App.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210814043802_inti")]
-    partial class inti
+    [Migration("20210818234230_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -123,7 +123,7 @@ namespace CoolMessages.App.Migrations
                     b.Property<int>("ContaCreditadoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ContaId")
+                    b.Property<int>("ContaId")
                         .HasColumnType("int");
 
                     b.Property<string>("DataDeTransferencia")
@@ -166,11 +166,11 @@ namespace CoolMessages.App.Migrations
 
             modelBuilder.Entity("CoolMessages.App.Models.Transferecia", b =>
                 {
-                    b.HasOne("CoolMessages.App.Models.Conta", "Conta")
+                    b.HasOne("CoolMessages.App.Models.Conta", null)
                         .WithMany("Transferencias")
-                        .HasForeignKey("ContaId");
-
-                    b.Navigation("Conta");
+                        .HasForeignKey("ContaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoolMessages.App.Models.Conta", b =>

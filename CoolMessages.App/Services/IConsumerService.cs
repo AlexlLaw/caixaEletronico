@@ -8,5 +8,7 @@ namespace CoolMessages.App.Services
         Task<bool> SaveChangesAsync();
         Transferecia MontarTransferencia(MessageInputModel model);
         void addTransferencia(MessageInputModel model);
+        Task<Conta> GetContaById(int id);
+        Task<Pessoa> GetByCpf(string cpf);
     }
 }

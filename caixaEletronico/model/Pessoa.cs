@@ -1,7 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace caixaEletronico.model
 {
-    public class Pessoa 
+    public class Pessoa
     {
+        // public Pessoa(
+        //     string nome,
+        //     string cpf,
+        //     string dataNascimento,
+        //     int idade,
+        //     int tipoContaID)
+        // {
+        //     Nome = nome;
+        //     Cpf = cpf;
+        //     DataNascimento = dataNascimento;
+        //     Idade = idade;
+        //     TipoContaID = tipoContaID;
+        // }
+
+        [Key]
         public int PessoaId { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }

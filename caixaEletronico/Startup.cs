@@ -1,6 +1,8 @@
 
 using caixaEletronico.data;
+using caixaEletronico.DTO.Validators;
 using caixaEletronico.Extensions;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +27,11 @@ namespace caixaEletronico
         {
              services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
 
-            services.AddControllers();
+            services.AddControllers()
+            .AddFluentValidation(Config => {
+                Config.RegisterValidatorsFromAssemblyContaining<PesssoaValidator>();
+                });
+               
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "caixaEletronico", Version = "v1" });

@@ -33,15 +33,8 @@ namespace CoolMessages.App
              services
                     .AddRepositorys()
                     .AddServices();
-            //  services.AddScoped<IRepository, Repository>();
-            // services.AddScoped<ITipoContaRepository, TipoContaRepository>();
-            // services.AddScoped<IContaRepository, ContaRepository>();
 
-            //   services.AddScoped<IConsumerService, ConsumerService>();
-            //  services.AddScoped<INotificationService, NotificationService>();
-
-
-              services.AddHostedService<ProcessMessageConsumer>();
+             services.AddHostedService<ProcessMessageConsumer>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

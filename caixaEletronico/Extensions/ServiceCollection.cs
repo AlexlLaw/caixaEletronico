@@ -1,6 +1,8 @@
 using caixaEletronico.data;
 using caixaEletronico.services;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation.AspNetCore;
+using caixaEletronico.DTO.Validators;
 
 namespace caixaEletronico.Extensions
 {
@@ -15,9 +17,17 @@ namespace caixaEletronico.Extensions
             return services;
         }
 
-          public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services)
         {
              services.AddScoped<IContaService, ContaService>();
+            return services;
+        }
+
+        public static IServiceCollection AddValidations(this IServiceCollection services)
+        {
+            services.AddControllers()
+             .AddFluentValidation(Config => Config.RegisterValidatorsFromAssemblyContaining<PesssoaValidator>())
+             .AddFluentValidation(Config => Config.RegisterValidatorsFromAssemblyContaining<EnderecoValidator>());
             return services;
         }
     }

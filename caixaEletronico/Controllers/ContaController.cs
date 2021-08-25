@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using caixaEletronico.DTO;
 using caixaEletronico.model;
 using caixaEletronico.services;
 using Microsoft.AspNetCore.Http;
@@ -57,29 +58,30 @@ namespace caixaEletronico.Controllers
         public async Task<IActionResult> GetById(int id)
         {
              try {
-                var result = await _ContaService.GetById(id);
+                var result = await _ContaService.GetContaById(id);
+                
 
-                return Ok(result);
+                return Ok(result.Saldo);
             } catch {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro de conexão com banco de dados");
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Pessoa model)
+        public async Task<IActionResult> Post(PessoaDTO model)
         {
             try
             {
                 var hasTipoConta = _ContaService.GetTipoContaById(model.TipoContaID);
 
                 if (hasTipoConta.Result == null) {
-                    return Ok("Nosso caixa não faz operação com esse tipo de conta");
+                    return NotFound("Nosso caixa não faz operação com esse tipo de conta");
                 }
 
-                  _ContaService.AdicionarConta(model);
+               var result =  _ContaService.AdicionarConta(model);
 
                 if (await _ContaService.SaveChangesAsync()) {
-                    return Created($"/api/conta/{model.PessoaId}", "Conta aberta com sucesso, Numero da sua conta é: " +  model.Conta.NumeroDaConta);
+                    return Created($"/api/conta/{result.PessoaId}", "Conta aberta com sucesso, Numero da sua conta é: " +  result.Conta.NumeroDaConta);
                 }
             }
             catch
